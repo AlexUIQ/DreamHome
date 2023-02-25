@@ -1,0 +1,43 @@
+import tkinter as tk
+import random
+
+class RandomShapeGenerator:
+    def __init__(self, canvas):
+        self.canvas = canvas
+        self.shape = None
+        
+    def generate_shape(self):
+        if self.shape is not None:
+            self.canvas.delete(self.shape)
+            
+        x1 = random.randint(10, 290)
+        y1 = random.randint(10, 290)
+        x2 = random.randint(x1 + 10, 300)
+        y2 = random.randint(y1 + 10, 300)
+        
+        shape_type = random.choice(["rectangle", "oval", "triangle"])
+        
+        if shape_type == "rectangle":
+            self.shape = self.canvas.create_rectangle(x1, y1, x2, y2, fill="blue")
+        elif shape_type == "oval":
+            self.shape = self.canvas.create_oval(x1, y1, x2, y2, fill="red")
+        else:
+            self.shape = self.canvas.create_polygon(x1, y1, x2, y1, (x1+x2)//2, y2, fill="green")
+
+class Application:
+    def __init__(self, master):
+        self.master = master
+        master.title("Random Shape Generator")
+        
+        self.canvas = tk.Canvas(master, width=300, height=300, bg="white")
+        self.canvas.pack(fill=tk.BOTH, expand=True)
+        
+        self.generator = RandomShapeGenerator(self.canvas)
+        
+        self.button = tk.Button(master, text="Generate Shape", command=self.generator.generate_shape)
+        self.button.pack(side=tk.BOTTOM)
+        
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = Application(root)
+    root.mainloop()
